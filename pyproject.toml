@@ -7,4 +7,5 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.122.0",
     "scalar-fastapi>=1.4.4",
+    "sqlmodel>=0.0.27",
 ]
