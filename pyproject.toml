@@ -6,8 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "asyncpg>=0.31.0",
+    "bcrypt==3.2.0",
     "fastapi[standard]>=0.122.0",
+    "passlib[bcrypt]>=1.7.4",
+    "ptpython>=3.0.32",
     "pydantic-settings>=2.12.0",
+    "pyjwt>=2.10.1",
     "scalar-fastapi>=1.4.4",
     "sqlmodel>=0.0.27",
 ]

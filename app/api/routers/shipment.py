@@ -1,13 +1,12 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.api.dependencies import ServiceDep
-from app.api.schemas.shipment import Shipment, ShipmentCreate, ShipmentUpdate
+from app.api.dependencies import SellerDep, ShipmentServiceDep
+from app.api.schemas.shipment import ShipmentRead, ShipmentCreate, ShipmentUpdate
 
 router = APIRouter(prefix="/shipment", tags=["Shipment"])
 
-
-@router.get("/", response_model=Shipment)
-async def get_shipment(id: int, service: ServiceDep):
+@router.get("/", response_model=ShipmentRead)
+async def get_shipment(id: int, _: SellerDep,  service: ShipmentServiceDep):
 
     shipment = await service.get(id)
     if shipment is None:
@@ -17,13 +16,13 @@ async def get_shipment(id: int, service: ServiceDep):
     return shipment
 
 
-@router.post("/")
-async def submit_shipment(shipment: ShipmentCreate, service: ServiceDep)-> Shipment:
+@router.post("/", response_model=ShipmentRead)
+async def submit_shipment(seller: SellerDep, shipment: ShipmentCreate, service: ShipmentServiceDep):
     return await service.add(shipment)
 
 
-@router.patch("/", response_model=Shipment)
-async def update_shipment(id: int, shipment_update: ShipmentUpdate, service: ServiceDep):
+@router.patch("/", response_model=ShipmentRead)
+async def update_shipment(id: int, shipment_update: ShipmentUpdate, service: ShipmentServiceDep):
     update = shipment_update.model_dump(exclude_none=True)
 
     if not update:
@@ -31,14 +30,11 @@ async def update_shipment(id: int, shipment_update: ShipmentUpdate, service: Ser
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='no data provided for the update'
         )
-    shipment = await service.update(id, update)
-
-
-    return shipment
+    return await service.update(id, update)
 
 
 @router.delete("/")
-async def delete_shipment(id: int, service: ServiceDep) -> dict[str, str]:
+async def delete_shipment(id: int, service: ShipmentServiceDep) -> dict[str, str]:
     await service.delete(id)
     return {"detail": f"shipment with id {id} is deleted"}
 

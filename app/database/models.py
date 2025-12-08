@@ -21,8 +21,9 @@ class Shipment(SQLModel, table=True):
     estimated_delivery: datetime
 
 class Seller(SQLModel, table=True):
+    __tablename__ = "seller"
+
     id: int = Field(default=None,primary_key=True)
     name: str
-
     email: EmailStr
     password_hash: str
