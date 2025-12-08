@@ -8,7 +8,7 @@ class BaseShipment(SQLModel):
     weight: float = Field(le=25)
     destination: int
 
-class Shipment(BaseShipment, table=True):
+class Shipment(BaseShipment):
     id: int = Field(default=None, primary_key=True)
     status: ShipmentStatus
     estimated_delivery: datetime
