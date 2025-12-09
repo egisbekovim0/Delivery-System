@@ -1,3 +1,4 @@
+from uuid import UUID
 from fastapi import APIRouter, HTTPException, status
 
 from app.api.dependencies import SellerDep, ShipmentServiceDep
@@ -6,7 +7,7 @@ from app.api.schemas.shipment import ShipmentRead, ShipmentCreate, ShipmentUpdat
 router = APIRouter(prefix="/shipment", tags=["Shipment"])
 
 @router.get("/", response_model=ShipmentRead)
-async def get_shipment(id: int, _: SellerDep,  service: ShipmentServiceDep):
+async def get_shipment(id: UUID,  service: ShipmentServiceDep):
 
     shipment = await service.get(id)
     if shipment is None:
@@ -17,8 +18,10 @@ async def get_shipment(id: int, _: SellerDep,  service: ShipmentServiceDep):
 
 
 @router.post("/", response_model=ShipmentRead)
-async def submit_shipment(seller: SellerDep, shipment: ShipmentCreate, service: ShipmentServiceDep):
-    return await service.add(shipment)
+async def submit_shipment(seller: SellerDep, 
+            shipment: ShipmentCreate, 
+            service: ShipmentServiceDep):
+    return await service.add(shipment, seller)
 
 
 @router.patch("/", response_model=ShipmentRead)
