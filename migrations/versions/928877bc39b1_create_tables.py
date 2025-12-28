@@ -1,19 +1,18 @@
-"""init
+"""create_tables
 
-Revision ID: c7d398e442a8
+Revision ID: 928877bc39b1
 Revises: 
-Create Date: 2025-12-09 08:26:05.515144
+Create Date: 2025-12-28 13:05:54.842353
 
 """
 from typing import Sequence, Union
 
-import sqlmodel
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
-
+import sqlmodel
 # revision identifiers, used by Alembic.
-revision: str = 'c7d398e442a8'
+revision: str = '928877bc39b1'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -46,7 +45,7 @@ def upgrade() -> None:
     sa.Column('content', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('weight', sa.Float(), nullable=False),
     sa.Column('destination', sa.Integer(), nullable=False),
-    sa.Column('status', sa.Enum('placed', 'in_transit', 'out_for_delivery', 'delivered', name='shipmentstatus'), nullable=False),
+    sa.Column('status', postgresql.ENUM(name='shipmentstatus', create_type=False), nullable=False),
     sa.Column('estimated_delivery', sa.DateTime(), nullable=False),
     sa.Column('seller_id', sa.Uuid(), nullable=False),
     sa.Column('delivery_partner_id', sa.Uuid(), nullable=False),

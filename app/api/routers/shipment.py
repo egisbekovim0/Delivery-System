@@ -8,8 +8,8 @@ router = APIRouter(prefix="/shipment", tags=["Shipment"])
 
 @router.get("/", response_model=ShipmentRead)
 async def get_shipment(id: UUID,  service: ShipmentServiceDep):
-
     shipment = await service.get(id)
+
     if shipment is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="given id doesn't exist"
@@ -36,7 +36,8 @@ async def update_shipment(id: UUID,
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='no data provided for the update'
         )
-    return await service.update(id, update)
+    
+    return await service.update(id, shipment_update,partner)
 
 
 @router.delete("/")

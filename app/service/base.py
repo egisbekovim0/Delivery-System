@@ -17,7 +17,7 @@ class BaseService:
         return entity
     
     async def _update(self, entity: SQLModel):
-        return self._create(entity)
+        return await self._add(entity)
     
     async def _delete(self, entity: SQLModel):
         await self.session.delete(entity)
